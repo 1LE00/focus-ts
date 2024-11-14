@@ -1,4 +1,4 @@
-import { Minutes } from "../context/TimerContext";
+import { Minutes } from "../features/timer/timerSlice"
 
 interface ConfigSetting {
     key: string,
