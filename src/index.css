@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* css-resets */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font: inherit; /* Get rid of all font sizes and heights */
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+html {
+  color-scheme: dark light; /* Default dark */
+}
+
+body {
+  background-color: whitesmoke;
+  font-family: "Poppins", sans-serif;
+  text-rendering: optimizeSpeed;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+img,
+picture,
+svg,
+video {
+  /* Media responsive */
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  background: none;
+  appearance: none;
+  border: none;
+  &:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+  overflow: hidden !important;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :has(:target) {
+    scroll-behavior: smooth;
+    scroll-padding-top: 3rem;
+  }
+}
+
+/* css-resets */
+
+:root {
+  --color-focus: hsl(0, 45%, 51%);
+  --color-short: hsl(206, 53%, 51%);
+  --color-long: hsl(140, 42%, 38%);
+  --color-purple: hsl(272, 39%, 49%);
+  --color-gold: hsl(36, 57%, 26%);
+  --color-red: hsl(9, 75%, 57%);
+  --color-yellow: hsl(50, 51%, 33%);
+  --color-blue: hsl(197, 73%, 38%);
+  --color-green: hsl(120, 33%, 43%);
+  --color-pink: hsl(284, 17%, 43%);
+  --color-gray: hsl(0, 2%, 25%);
+  --color-peach: hsl(30, 52%, 45%);
+  --color-ocean: hsl(210, 44%, 47%);
+  --color-orange: hsla(20, 47%, 49%, 0.855);
+  --color-teal: hsl(120, 27%, 51%);
+  --color-black-jet: hsl(0, 0%, 20%);
+  --color-black-charcoal: hsl(0, 0%, 27%);
+  --color-dark: hsl(0, 0%, 0%);
+}
+
+input[type="checkbox"]::before {
+  position: absolute;
+  content: "";
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: white;
+  top: 4px;
+  left: 4px;
+  transition: left linear 500ms;
+  box-shadow: inset 2px 2px 8px 0px rgba(0, 0, 0, 0.3);
+}
+
+input[type="checkbox"]:checked::before {
+  left: 28px;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.modal-body::-webkit-scrollbar,
+.audio-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.modal-body::-webkit-scrollbar-track,
+.audio-list::-webkit-scrollbar-track {
+  background-color: rgba(107, 114, 128, 0.25);
+}
+
+.modal-body::-webkit-scrollbar-thumb,
+.audio-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-black-jet);
+}
+
+.custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+    4px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
