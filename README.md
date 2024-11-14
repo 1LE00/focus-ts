@@ -43,7 +43,7 @@ Focus is a Pomodoro timer clone that enhances your productivity with a unique fe
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/1LE00/Focus.git
+   git clone https://github.com/1LE00/focus-ts.git
    cd focus
    ```
 
