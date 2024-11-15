@@ -8,6 +8,8 @@ import { selectTheme } from "../../features/theme/themeSlice";
 import { buttonConfigs, ChangesIn, Minutes, selectActiveButton, selectMinutes, selectTracker, setActiveButton, setChangesIn, setTracker } from "../../features/timer/timerSlice";
 import { TimerButton } from "../../components/Buttons/TimerButton";
 import { selectAutoStart, selectDarkTheme, selectToggle, selectNotificationOptions, selectLongBreakInterval } from "../settings/settingsSlice";
+import { updateConfigSettingsinDB } from "../database/Thunks";
+import { selectDatabase } from "../database/DatabaseSlice";
 
 export const Timer = () => {
     // * Settings selectors
@@ -25,6 +27,8 @@ export const Timer = () => {
     const { changesIn, totalDuration } = useAppSelector((state) => state.timer);
     // * Session selectors
     const sessionCount = useAppSelector(selectSessionCount);
+    // * Database selectors
+    const db = useAppSelector(selectDatabase) as IDBDatabase
     // * Dispatch for all
     const dispatch = useAppDispatch();
 
@@ -45,7 +49,7 @@ export const Timer = () => {
     const handleButtonClick = (buttonId: number) => {
         // * Set it to false so that focus or break session doesn't start after 
         // * they are automated
-        dispatch(setTracker({ didTimerRun: false }));
+        dispatch(setTracker({ didTimerRun: false, isPaused: false }));
         dispatch(setProgress());
         setCountdown(() => {
             return buttonId === 1 ? minutes.focus * 60 :
@@ -230,7 +234,7 @@ export const Timer = () => {
                 focus: sessionCount.focus + 1,
                 break: sessionCount.focus
             }))
-            localStorage.setItem("Sessions Completed", sessionCount.focus.toString());
+            updateConfigSettingsinDB(db, 'focusSessionCompleted', sessionCount.focus + 1)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);

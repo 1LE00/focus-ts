@@ -24,7 +24,7 @@ export const Dropdown = ({ audioArray, isBreakAudio }: DropdownProps) => {
     const currentMusic = isBreakAudio ? music.break : music.alarm;
 
     // @func -toogle dropdown and select the correct music for alarm and break 
-    const handleSelect = (label: string, value: string | undefined) => {
+    const handleSelect = (label: string, value: string) => {
         setToggleDropDown(!toggleDropDown);
         dispatch(setMusic({
             [isBreakAudio ? 'break' : 'alarm']:
@@ -89,7 +89,7 @@ export const Dropdown = ({ audioArray, isBreakAudio }: DropdownProps) => {
     */
     useEffect(() => {
         const breakMusic = breakMusicRef.current;
-        breakMusic.volume = convertVolume(music.break.volume);
+        breakMusic.volume = convertVolume(music.break.volume as number);
         const handlePlayback = async () => {
             try {
                 if (isActive && activeButton !== 1) {
@@ -126,7 +126,7 @@ export const Dropdown = ({ audioArray, isBreakAudio }: DropdownProps) => {
                 </section>
                 {toggleDropDown &&
                     <ul className={`audio-list text-sm bg-white w-full rounded shadow-dropdown absolute mt-1 z-10 ${isBreakAudio && 'h-64 overflow-auto'}`}>
-                        {isBreakAudio && <li className="text-sm hover:bg-gray-500/10 py-3 px-4 border-b" onClick={() => handleSelect("None", undefined)}>None</li>}
+                        {isBreakAudio && <li className="text-sm hover:bg-gray-500/10 py-3 px-4 border-b" onClick={() => handleSelect("None", '')}>None</li>}
                         {audioArray.map(({ value, label }) => {
                             return <li key={label} className="text-sm hover:bg-gray-500/10 py-3 px-4 border-b" onClick={() => handleSelect(label, value)}>{label}</li>
                         })}

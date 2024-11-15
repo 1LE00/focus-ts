@@ -9,15 +9,10 @@ interface sessionState {
     sessionCount: SessionCount,
 }
 
-const getSessionCount = (key: string): number => {
-    const value = localStorage.getItem(key);
-    return value === null ? 1 : Number.parseInt(value);
-}
-
 const initialState: sessionState = {
     sessionCount: {
-        focus: getSessionCount("Sessions Completed"),
-        break: getSessionCount("Sessions Completed")
+        focus: 1,
+        break: 1
     }
 }
 

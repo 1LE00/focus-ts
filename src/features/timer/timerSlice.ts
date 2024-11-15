@@ -84,6 +84,9 @@ const timerSlice = createSlice({
         setMinutes: (state, action: PayloadAction<Partial<Minutes>>) => {
             state.minutes = { ...state.minutes, ...action.payload }
         },
+        setMinutesFromConfig: (state, action: PayloadAction<Minutes>) => {
+            state.minutes = action.payload;
+        },
         setChangesIn: (state, action: PayloadAction<ChangesIn>) => {
             state.changesIn = action.payload
         },
@@ -94,9 +97,16 @@ const timerSlice = createSlice({
     }
 });
 
-export const { setActiveButton, setTracker, setMinutes, setChangesIn } = timerSlice.actions
 export const selectActiveButton = (state: RootState) => state.timer.activeButton;
 export const selectTracker = (state: RootState) => state.timer.tracker;
 export const selectMinutes = (state: RootState) => state.timer.minutes;
+
+export const {
+    setActiveButton,
+    setTracker,
+    setMinutes,
+    setMinutesFromConfig,
+    setChangesIn,
+} = timerSlice.actions
 
 export default timerSlice.reducer

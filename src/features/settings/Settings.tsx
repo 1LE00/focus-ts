@@ -4,8 +4,11 @@ import { ChangeEvent, FocusEvent, KeyboardEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectColors, selectTheme, updateTheme } from "../../features/theme/themeSlice";
 import { selectMinutes, setMinutes, setTracker } from "../../features/timer/timerSlice";
-import { selectAlarmAudioFiles, selectBreakAudioFiles } from "../../features/sounds/soundSlice";
+import { selectAlarmAudioFiles, selectBreakAudioFiles, selectMusic } from "../../features/sounds/soundSlice";
 import { selectAutoStart, selectDarkTheme, selectLongBreakInterval, selectNotificationOptions, selectToggle, setAutoStart, setDarkTheme, setLongBreakInterval, setNotificationOptions, setToggle } from "./settingsSlice";
+import { selectDatabase } from "../database/DatabaseSlice";
+import { updateConfigSettingsinDB } from "../database/Thunks";
+import { selectSessionCount } from "../session/sessionSlice";
 
 export const Settings = () => {
     // * Settings selectors
@@ -22,8 +25,13 @@ export const Settings = () => {
     // * Sound selectors
     const alarmAudioFiles = useAppSelector(selectAlarmAudioFiles);
     const breakAudioFiles = useAppSelector(selectBreakAudioFiles);
+    const music = useAppSelector(selectMusic);
+    // * Session selectors
+    const sessionCount = useAppSelector(selectSessionCount);
     // * Dispatch for all
     const dispatch = useAppDispatch();
+    // * Database related constants
+    const db = useAppSelector(selectDatabase) as IDBDatabase;
 
     // * Actions to be performed when we close the settings modal
     const closeModal = () => {
@@ -36,6 +44,22 @@ export const Settings = () => {
         // * Set it to false so any session doesn't start after the timer has run
         // * and user decides to automate focus or break
         dispatch(setTracker({ didTimerRun: false }));
+        // * Update the database after the user closes the settings modal 
+        updateConfigSettingsinDB(db, 'minutes', minutes);
+        updateConfigSettingsinDB(db, 'longBreakInterval', Number(longBreakInterval));
+        updateConfigSettingsinDB(db, 'focusSessionCompleted', sessionCount.focus);
+        updateConfigSettingsinDB(db, 'darkModeEnabled', Number(darkTheme));
+        updateConfigSettingsinDB(db, 'colorThemes', {
+            focus: theme.focus,
+            short: theme.short,
+            long: theme.long
+        });
+        updateConfigSettingsinDB(db, 'alarmSound', { label: music.alarm.label, file: music.alarm.file });
+        updateConfigSettingsinDB(db, 'alarmSoundVolume', Number(music.alarm.volume));
+        updateConfigSettingsinDB(db, 'breakSound', { label: music.break.label, file: music.break.file });
+        updateConfigSettingsinDB(db, 'breakSoundVolume', Number(music.break.volume));
+        updateConfigSettingsinDB(db, 'autoStartFocus', Number(autoStart.focus));
+        updateConfigSettingsinDB(db, 'autoStartBreak', Number(autoStart.break));
     };
     // * Actions to be performed when user sets preferences for focus and break sessions
     const handleChangeInMinutes = (id: number, event: ChangeEvent<HTMLInputElement>) => {

@@ -5,6 +5,7 @@ import timerReducer from '../features/timer/timerSlice';
 import sessionReducer from '../features/session/sessionSlice';
 import progressbarReducer from '../features/progressbar/progressbarSlice';
 import settingsReducer from "../features/settings/settingsSlice";
+import databaseReducer from "../features/database/DatabaseSlice";
 
 
 export const store = configureStore({
@@ -14,8 +15,22 @@ export const store = configureStore({
         timer: timerReducer,
         session: sessionReducer,
         progressbar: progressbarReducer,
-        settings: settingsReducer
+        settings: settingsReducer,
+        database: databaseReducer
     },
+    // * Had issues during initial configuration, so added this
+    // * Look up serialization
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                // Ignore these action types
+                ignoredActions: [
+                    'database/initialize/fulfilled',
+                    'database/fetchConfigData/fulfilled'
+                ],
+                ignoredPaths: ['database.db']
+            },
+        }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

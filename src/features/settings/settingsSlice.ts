@@ -21,7 +21,7 @@ import { RootState } from '../../app/store';
       - `longBreakInterval`: The number of focus sessions after which a long break will be triggered. This could be a number (e.g., 4) or a string (e.g., "4").
 */
 
-type Autostart = {
+export type Autostart = {
     focus: boolean,
     break: boolean
 }
@@ -67,6 +67,12 @@ const settingsSlice = createSlice({
         setAutoStart: (state, action: PayloadAction<Partial<Autostart>>) => {
             state.autoStart = { ...state.autoStart, ...action.payload }
         },
+        setAutoStartFocus: (state, action: PayloadAction<boolean>) => {
+            state.autoStart.focus = action.payload
+        },
+        setAutoStartBreak: (state, action: PayloadAction<boolean>) => {
+            state.autoStart.break = action.payload
+        },
         setToggle: (state, action: PayloadAction<ToggleOptions>) => {
             state.toggle = action.payload
         },
@@ -82,10 +88,19 @@ const settingsSlice = createSlice({
     }
 });
 
-export const { setAutoStart, setToggle, setNotificationOptions, setDarkTheme, setLongBreakInterval } = settingsSlice.actions
 export const selectAutoStart = (state: RootState) => state.settings.autoStart;
 export const selectToggle = (state: RootState) => state.settings.toggle;
 export const selectDarkTheme = (state: RootState) => state.settings.darkTheme;
 export const selectNotificationOptions = (state: RootState) => state.settings.notificationOptions;
 export const selectLongBreakInterval = (state: RootState) => state.settings.longBreakInterval;
+
+export const {
+    setAutoStart,
+    setAutoStartFocus,
+    setAutoStartBreak,
+    setToggle,
+    setNotificationOptions,
+    setDarkTheme,
+    setLongBreakInterval
+} = settingsSlice.actions
 export default settingsSlice.reducer
