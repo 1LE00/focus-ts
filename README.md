@@ -44,7 +44,7 @@ Focus is a Pomodoro timer clone that enhances your productivity with a unique fe
 
    ```bash
    git clone https://github.com/1LE00/focus-ts.git
-   cd focus
+   cd focus-ts
    ```
 
 2. Install the Dependencies
@@ -65,8 +65,8 @@ This project was built using the following technologies:
 
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
 - [TypeScript](https://www.typescriptlang.org/): TypeScript is JavaScript with syntax for types.
-- [Redux Toolkit](https://redux-toolkit.js.org/): TypeScript is JavaScript with syntax for types.
-- [React Router](https://reactrouter.com/en/main/start/overview): TypeScript is JavaScript with syntax for types.
+- [Redux Toolkit](https://redux-toolkit.js.org/): Redux Toolkit is the official library for simplifying Redux state management.
+- [React Router](https://reactrouter.com/en/main/start/overview): React Router is a library for handling navigation and routing in React applications.
 - [Vite](https://vitejs.dev/): A fast build tool for modern web development.
 - [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for quickly building custom designs.
 
