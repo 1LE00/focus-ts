@@ -16,6 +16,7 @@ typescript-practice
 /src/hooks
 /src/context
 /src/db
+/src/features/reports
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
