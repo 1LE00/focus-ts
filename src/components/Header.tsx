@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import Report from "../features/reports/Report";
 import { Settings } from "../features/settings/Settings"
 import { selectDarkTheme, setToggle } from "../features/settings/settingsSlice";
 import { selectTracker } from "../features/timer/timerSlice";
@@ -52,6 +53,7 @@ export const Header = () => {
         </Link>
         {/* Navigation links */}
       </nav>
+      <Report />
       <Settings />
     </header>
   )

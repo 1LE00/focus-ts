@@ -50,6 +50,10 @@ video {
   max-width: 100%;
 }
 
+label {
+  cursor: text;
+}
+
 input,
 button,
 textarea,
@@ -58,13 +62,13 @@ select {
   appearance: none;
   border: none;
   &:focus-visible {
-    outline: 1px solid rgba(255, 255, 255, 0.5);
+    outline: 1px solid rgba(255, 255, 255, 0.25);
   }
 }
 
 button,
 a {
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
 button:focus-visible,
@@ -72,15 +76,9 @@ a:focus-visible {
   outline: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  margin: -1px !important;
-  padding: 0 !important;
-  border: 0 !important;
-  clip: rect(0, 0, 0, 0) !important;
-  overflow: hidden !important;
+::selection {
+  background-color: #ff5726;
+  color: floralwhite;
 }
 
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
@@ -127,9 +125,30 @@ a:focus-visible {
   --color-black-jet: hsl(0, 0%, 20%);
   --color-black-charcoal: hsl(0, 0%, 27%);
   --color-dark: hsl(0, 0%, 0%);
+  --color-task: rgb(255, 99, 71);
+  /* Color Mark for tags and porjects */
+  --color-crimsonred: #f64437;
+  --color-cerisepink: #ea1f63;
+  --color-indigo: #9e29ae;
+  --color-violet: #6539b1;
+  --color-denimblue: #3e50b1;
+  --color-dodgerblue: #1997f0;
+  --color-skyblue: #00a8f0;
+  --color-turquoise: #00b9d1;
+  --color-seagreen: #009488;
+  --color-forestgreen: #4ab057;
+  --color-limegreen: #8cc256;
+  --color-olivegreen: #cddc4c;
+  --color-lemonyellow: #ffea4d;
+  --color-amber: #ffc02e;
+  --color-burntorange: #ff961f;
+  --color-vermilion: #ff5726;
+  --color-copper: #7a5548;
+  --color-slateblue: #607d8a;
+  --color-coral: #ff6347;
 }
 
-input[type="checkbox"]::before {
+.settings-modal input[type="checkbox"]::before {
   position: absolute;
   content: "";
   width: 24px;
@@ -161,6 +180,15 @@ input::-webkit-outer-spin-button {
   width: 3px;
 }
 
+.list-of-tags::-webkit-scrollbar,
+.list-of-projects::-webkit-scrollbar {
+  width: 0px;
+}
+
+.pomodoro-count-wrapper::-webkit-scrollbar {
+  height: 0;
+}
+
 .modal-body::-webkit-scrollbar-track,
 .audio-list::-webkit-scrollbar-track {
   background-color: rgba(107, 114, 128, 0.25);
@@ -189,7 +217,8 @@ input::-webkit-outer-spin-button {
   height: 22px;
   border-radius: 50%;
   background-color: white;
-  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    inset 2px 2px 8px rgba(0, 0, 0, 0.3),
     4px 4px 4px rgba(0, 0, 0, 0.3);
 }
 

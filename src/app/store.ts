@@ -6,6 +6,11 @@ import sessionReducer from '../features/session/sessionSlice';
 import progressbarReducer from '../features/progressbar/progressbarSlice';
 import settingsReducer from "../features/settings/settingsSlice";
 import databaseReducer from "../features/database/DatabaseSlice";
+import taskReducer from "../features/tasks/taskSlice";
+import floatingActionButtonReducer from "../features/FloatingActionButton/FloatingActionButtonSlice";
+import tagReducer from "../features/tags/tagSlice";
+import projectReducer from "../features/projects/projectSlice";
+import toastReducer from "../features/toasts/toastSlice";
 
 
 export const store = configureStore({
@@ -16,7 +21,12 @@ export const store = configureStore({
         session: sessionReducer,
         progressbar: progressbarReducer,
         settings: settingsReducer,
-        database: databaseReducer
+        database: databaseReducer,
+        tasks: taskReducer,
+        tags: tagReducer,
+        projects: projectReducer,
+        floatingActionButton: floatingActionButtonReducer,
+        toasts: toastReducer,
     },
     // * Had issues during initial configuration, so added this
     // * Look up serialization
