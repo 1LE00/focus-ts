@@ -1,10 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import configSettings, { ConfigSetting, MusicType } from "../../config/config";
+import configSettings, { ConfigSetting, MusicType, Projects, Tags, TagsAndProjects, userProjects, userTags } from "../../config/config";
 import { setAutoStartBreak, setAutoStartFocus, setDarkTheme, setLongBreakInterval } from "../settings/settingsSlice";
 import { Minutes, setMinutesFromConfig } from "../timer/timerSlice";
 import { changeSessionCount } from "../session/sessionSlice";
 import { Theme, updateTheme } from "../theme/themeSlice";
 import { setAlarmSound, setAlarmVolume, setBreakSound, setBreakVolume } from "../sounds/soundSlice";
+import { addTagName } from "../tags/tagSlice";
+import { addProjectName } from "../projects/projectSlice";
 
 export const initializeDatabase = createAsyncThunk('database/initialize', async (_, { rejectWithValue }) => {
     const openDatabase = (name: string, version: number) => {
@@ -20,6 +22,15 @@ export const initializeDatabase = createAsyncThunk('database/initialize', async 
                         configSettings.forEach(setting => {
                             configObjectStore.add(setting);
                         })
+                    }
+                }
+
+                if (!db.objectStoreNames.contains('activity')) {
+                    const objectStore = db.createObjectStore('activity', { keyPath: 'key' });
+                    objectStore.transaction.oncomplete = () => {
+                        const activityObjectStore = db.transaction('activity', 'readwrite').objectStore('activity');
+                        activityObjectStore.add(userTags);
+                        activityObjectStore.add(userProjects);
                     }
                 }
             }
@@ -113,9 +124,48 @@ export const fetchAndSyncConfigData = createAsyncThunk('database/fetchAndSyncCon
     }
 });
 
+export const fetchTagsOrProjectsAndSync = createAsyncThunk('database/fecthTagsOrProjects', async ({ key }: { key: 'tags' | 'projects' }, { dispatch, rejectWithValue }) => {
+    const getTagsOrProjects = async () => {
+        return new Promise<Tags | Projects>((resolve, reject) => {
+            const request = indexedDB.open('Focus', 1);
+
+            request.onsuccess = (event) => {
+                const db = (event.target as IDBRequest).result as IDBDatabase;
+                const transaction = db.transaction('activity', 'readonly').objectStore('activity');
+                const tagsOrProjects = transaction.get(key);
+
+                tagsOrProjects.onsuccess = () => {
+                    resolve(tagsOrProjects.result);
+                }
+
+                tagsOrProjects.onerror = () => {
+                    reject(tagsOrProjects.error);
+                }
+            }
+        })
+    }
+    try {
+        const tagsOrProjects = await getTagsOrProjects();
+        if (tagsOrProjects.key === 'tags') {
+            tagsOrProjects.value.forEach(tag => dispatch(addTagName({ tagName: tag.name, tagColorMark: tag.color })))
+        } else {
+            tagsOrProjects.value.forEach(project => dispatch(addProjectName({ projectName: project.name, projectColorMark: project.color })))
+        }
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+})
+
 export const updateConfigSettingsinDB = (db: IDBDatabase, key: string, value: Partial<Theme> | MusicType | number | Minutes) => {
     if (db) {
         const objectStore = db.transaction('config', 'readwrite').objectStore('config');
+        objectStore.put({ key, value });
+    }
+}
+
+export const updateActivityinDB = (db: IDBDatabase, key: 'tags' | 'projects', value: TagsAndProjects[]) => {
+    if (db) {
+        const objectStore = db.transaction('activity', 'readwrite').objectStore('activity');
         objectStore.put({ key, value });
     }
 }

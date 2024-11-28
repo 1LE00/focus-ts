@@ -14,6 +14,7 @@ import {
 } from "../features/database/DatabaseSlice";
 import {
   fetchAndSyncConfigData,
+  fetchTagsOrProjectsAndSync,
   initializeDatabase,
 } from "../features/database/Thunks";
 
@@ -42,6 +43,8 @@ export default function Layout() {
   useEffect(() => {
     if (db) {
       dispatch(fetchAndSyncConfigData());
+      dispatch(fetchTagsOrProjectsAndSync({ key: "tags" }));
+      dispatch(fetchTagsOrProjectsAndSync({ key: "projects" }));
     }
   }, [db, dispatch]);
 

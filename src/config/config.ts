@@ -26,4 +26,22 @@ const configSettings: ConfigSetting[] = [
     { key: 'breakSoundVolume', value: 50 },
 ]
 
+export type TagsAndProjects = {
+    name: string,
+    color: string
+}
+
+export type Tags = {
+    key: 'tags',
+    value: TagsAndProjects[]
+}
+
+export type Projects = {
+    key: 'projects',
+    value: TagsAndProjects[]
+}
+
+export const userTags: Tags = { key: 'tags', value: [] };
+export const userProjects: Projects = { key: 'projects', value: [] };
+
 export default configSettings

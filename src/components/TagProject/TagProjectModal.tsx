@@ -25,6 +25,9 @@ import {
   toggleCreateProjectModal,
 } from "../../features/projects/projectSlice";
 import { showAndSetToastMessage } from "../../utils/utils";
+import { updateActivityinDB } from "../../features/database/Thunks";
+import { selectDatabase } from "../../features/database/DatabaseSlice";
+import { TagsAndProjects } from "../../config/config";
 
 type TagProjectModal = {
   isCreateTagOrProjectModalOpen: boolean;
@@ -46,13 +49,13 @@ const TagProjectModal = ({
   const ellipsisVerticalRef = useRef<SVGSVGElement>(null);
   const tagOrProjectModalRef = useRef<HTMLElement>(null);
   const tagOrProjectInputRef = useRef<HTMLInputElement>(null);
-
   // Hooks from store
   const isCreateProjectModalOpen = useAppSelector(selectToggleProjectModal);
   const listOfProjects = useAppSelector(selectListOfProjects);
   const isCreateTagModalOpen = useAppSelector(selectToggleTagModal);
   const listOfTags = useAppSelector(selectListOfTags);
   const dispatch = useAppDispatch();
+  const db = useAppSelector(selectDatabase) as IDBDatabase;
   // Close options menu
   const closeOptionsMenu = (event: MouseEvent) => {
     if (
@@ -84,6 +87,11 @@ const TagProjectModal = ({
             tagColorMark: choosenColor,
           }),
         );
+        if (!listOfTags.length) {
+          updateActivityinDB(db, "tags", [
+            { name: addTagOrProjectValue, color: choosenColor },
+          ]);
+        }
       } else {
         dispatch(
           addProjectName({
@@ -91,6 +99,11 @@ const TagProjectModal = ({
             projectColorMark: choosenColor,
           }),
         );
+        if (!listOfProjects.length) {
+          updateActivityinDB(db, "projects", [
+            { name: addTagOrProjectValue, color: choosenColor },
+          ]);
+        }
       }
       dispatch(toggleAction());
       showAndSetToastMessage(dispatch, {
@@ -131,6 +144,24 @@ const TagProjectModal = ({
       handleNewTagOrProjectNameAddition("project", exists, choosenColor);
     }
   };
+  useEffect(() => {
+    if (listOfTags.length) {
+      const tags: TagsAndProjects[] = listOfTags.map((tag) => ({
+        name: tag.tagName,
+        color: tag.tagColorMark,
+      }));
+      updateActivityinDB(db, "tags", tags);
+    }
+  }, [listOfTags, db]);
+  useEffect(() => {
+    if (listOfProjects.length) {
+      const projects: TagsAndProjects[] = listOfProjects.map((project) => ({
+        name: project.projectName,
+        color: project.projectColorMark,
+      }));
+      updateActivityinDB(db, "projects", projects);
+    }
+  }, [listOfProjects, db]);
   // Effect that adds a listener to tagOrProjectModal
   useEffect(() => {
     if (tagOrProjectModalRef.current) {

@@ -40,14 +40,14 @@ const DisplayTask = () => {
                 type="checkbox"
                 name={task.name}
                 id={task.id}
-                className={`border-3 h-6 w-6 flex-shrink-0 basis-6 rounded-full border-solid border-task ${checked[task.id] ? "bg-task" : "bg-white"}`}
+                className={`border-3 h-6 w-6 flex-shrink-0 basis-6 cursor-pointer rounded-full border-solid border-task ${checked[task.id] ? "bg-task" : "bg-white"}`}
                 checked={checked[task.id]}
                 onChange={() => handleCheckBoxChange(task.id)}
               />
               {checked[task.id] && (
                 <Check
                   fillColor="white"
-                  size="size-4 absolute top-1 left-1"
+                  size="size-4 absolute top-1 left-1 cursor-pointer"
                   strokeColor="white"
                   toggleOptions={() => handleCheckBoxChange(task.id)}
                 />
